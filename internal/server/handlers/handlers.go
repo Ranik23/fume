@@ -6,6 +6,6 @@ import (
 )
 
 
-func HomeHandler(w http.ResponseWriter, r * http.Request) {
+func HomeHandler(w http.ResponseWriter, r * http.Request) { // TODO
 	fmt.Fprint(w, "Hello, World!\n")
 }
