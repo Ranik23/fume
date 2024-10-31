@@ -39,7 +39,7 @@ func (s *Server) handle() {
 	s.Router.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	s.Router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		http.ServeFile(w, r, "/home/anton/rosl/internal/static/index.html")
 	})
 
 	s.Router.HandleFunc("/login", handlers.ShowLogin(s.Repository)).Methods("GET")
@@ -51,6 +51,7 @@ func (s *Server) handle() {
 }
 
 func (s *Server) Run() error {
+	s.Repository.DataBase.Clear(context.Background())
 
 	s.handle()
 
@@ -80,6 +81,7 @@ func (s *Server) Stop(ctx context.Context) error {
 		s.Logger.Error("Failed to gracefully shutdown server", sl.Err(err))
 		return err
 	}
+	s.Repository.DataBase.Clear(context.Background())
 	s.Logger.Info("Server gracefully stopped.")
 	return nil
 }

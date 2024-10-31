@@ -5,6 +5,7 @@ import (
 	"fume/internal/storage"
 	"fume/internal/utils"
 	"log/slog"
+	"slices"
 	"strings"
 )
 
@@ -40,6 +41,9 @@ func (r *Repository) Run(s string) []string {
 				output[i] = "unrecognized"
 			}
 		} else {
+			if !slices.Contains(dictionary, word) { // TODO
+				//
+			}
 			output[i] = word
 		}
 	}

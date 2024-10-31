@@ -49,11 +49,11 @@ func ConfigHandler(repository *repository.Repository) http.HandlerFunc {
 			return
 		}
 
-		// if err := repository.DataBase.CreateRequest(r); err != nil {
-		// 	repository.Logger.Error("Ошибка при создании запроса в базе данных", sl.Err(err))
-		// 	http.Error(w, "Ошибка при обработке запроса", http.StatusInternalServerError)
-		// 	return
-		// }
+		if err := repository.DataBase.CreateRequest(r); err != nil {
+			repository.Logger.Error("Ошибка при создании запроса в базе данных", sl.Err(err))
+			http.Error(w, "Ошибка при обработке запроса", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -61,11 +61,11 @@ func ShowLogin(repository *repository.Repository) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "/home/anton/rosl/internal/static/login.html")
 
-		if err := repository.DataBase.CreateRequest(r); err != nil {
-			repository.Logger.Error("Ошибка при создании запроса в базе данных", sl.Err(err))
-			http.Error(w, "Ошибка при обработке запроса", http.StatusInternalServerError)
-			return
-		}
+		// if err := repository.DataBase.CreateRequest(r); err != nil {
+		// 	repository.Logger.Error("Ошибка при создании запроса в базе данных", sl.Err(err))
+		// 	http.Error(w, "Ошибка при обработке запроса", http.StatusInternalServerError)
+		// 	return
+		// }
 	}
 }
 

@@ -2,17 +2,12 @@ package storage
 
 import (
 	"context"
-	"encoding/json"
 	sl "fume/internal/lib/logger"
 	"fume/internal/storage/ent"
 	"log/slog"
 	"net/http"
 	"time"
 )
-
-type RequestBody struct {
-	ID int `json:"id"`
-}
 
 type Storage struct {
 	Logger 	 *slog.Logger
@@ -35,19 +30,13 @@ func NewStorage(dsn string, logger *slog.Logger) *Storage {
 func (s *Storage) CreateRequest(request *http.Request) error {
 	ctx := context.Background()
 
-	var reqBody RequestBody
-	if err := json.NewDecoder(request.Body).Decode(&reqBody); err != nil {
-		s.Logger.Error("failed to decode request body", sl.Err(err))
-		return err
-	}
-
 	_, err := s.Client.Request.
 		Create().
 		SetMethod(request.Method).
 		SetEndpoint(request.URL.Path).
 		SetCreatedAt(time.Now()).
 		SetUpdatedAt(time.Now()).
-		SetID(reqBody.ID).
+		SetID(1).
 		Save(ctx)
 
 	if err != nil {
@@ -87,7 +76,16 @@ func (s *Storage) GetRequest(id int) (*ent.Request, error) {
 }
 
 
+func (s *Storage) Clear(ctx context.Context) error {
+	n, err := s.Client.Request.Delete().Exec(ctx);
+	if err != nil {
+		s.Logger.Error("Failed to clear the database", sl.Err(err))
+		return err
+	}
+	s.Logger.Info("Vertices deleted", "count" , n)
 
+	return nil
+}
 
 
 
