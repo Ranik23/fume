@@ -1,0 +1,18 @@
+alphabet:
+  ["A", "B", "C"]
+
+dictionary: ["ABCBABABA", "ABCB", "ABBBBBB"]
+
+server:
+  host: "localhost"
+  port: "8080"
+
+database:
+  host: "localhost"
+  port: "5432"
+  user: "postgres"
+  password: "postgres"
+  name: "users_record"
+  ssl: "disabled"
+
+environment: local # dev, prod, local
